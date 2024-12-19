@@ -23,7 +23,6 @@ async def lifespan(app: FastAPI):
     yield
     await engine.dispose()
 
-
 app = FastAPI(
     lifespan=lifespan,
     root_path='/api'
@@ -35,10 +34,10 @@ app.version = "0.0.1"
 app.summary = "API for movie economic data"
 app.description = "Developed by: Frank Casanova \
 \n\ncontact: frankcasanova.info@gmail.com \
-    \n\non linkedIn: https://www.linkedin.com/in/frankcasanova/"
+    \n\non linkedIn: https://www.linkedin.com/in/frankcasanova-/"
 
 
 # write a basic endpoint to test the api
-@app.get("/")
+@app.get("/", tags=["root"])
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Movie API please visit /docs"}
