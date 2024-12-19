@@ -1,15 +1,16 @@
-#create a movie model for the database
+# create a movie model for the database
 from sqlalchemy import Column, Integer, String, Float, Date, BigInteger
-from sqlalchemy.orm import relationship, DeclarativeBase
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
+
 
 class Base(DeclarativeBase):
     pass
 
+
 class Movie(Base):
     __tablename__ = 'movies'
 
-    id = Column(Integer, primary_key=True, autoincrement=True) 
+    id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String, nullable=False)
     poster = Column(String, nullable=False)
     overview = Column(String, nullable=False)
