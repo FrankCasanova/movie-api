@@ -1,0 +1,12 @@
+[lint]
+preview = true
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "FAST",  # FastAPI specific rules
+]
+ignore = [
+    "E501",  # line too long
+    "E741",  # ambiguous variable name
+]

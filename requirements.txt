@@ -1,0 +1,21 @@
+#app
+fastapi[all]
+uvicorn[standard]
+
+#database
+sqlalchemy[asyncio]
+psycopg2-binary
+asyncpg
+
+#environment
+python-dotenv
+
+#redis
+redis[hiredis]
+
+#monitoring
+icecream
+debugpy
+
+#continius deployment
+ruff
