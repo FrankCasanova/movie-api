@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from api.models.movieModels import Movie
 from api.schemas.movieSerializer import MovieResponse
-from sqlalchemy import exists, select, update
+from sqlalchemy import exists, select
 
 
 async def get_all_movies(session: AsyncSession):
@@ -28,7 +28,8 @@ async def add_movie(movie: MovieResponse, session: AsyncSession):
     await session.commit()
     return {"message": "Movie added successfully"}
 
-#return a movie base on id
+
+# return a movie base on id
 async def get_movie_by_id(id: int, session: AsyncSession) -> MovieResponse:
     # Check if ID exists
     exists_query = select(exists().where(Movie.id == id))

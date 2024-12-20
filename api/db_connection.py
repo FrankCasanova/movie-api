@@ -15,7 +15,7 @@ DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME
 
 
 def get_engine():
-    return create_async_engine(DATABASE_URL, echo=True)
+    return create_async_engine(DATABASE_URL, echo=False)
 
 
 # sessionmaker for asychronous sessions

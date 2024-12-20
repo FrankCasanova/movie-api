@@ -13,12 +13,13 @@ from fastapi import FastAPI
 from icecream import ic
 ic.configureOutput(includeContext=True)
 
+# debugpy.listen(("0.0.0.0", 9999))
 
-#TODO: add a health check endpoint
-#TODO: add a metrics endpoint
-#TODO: add caching on endpoints
-#TODO: add error handling
-#TODO: add logging
+# TODO: add a health check endpoint
+# TODO: add a metrics endpoint
+# TODO: add caching on endpoints
+# TODO: add error handling
+# TODO: add logging
 
 
 @asynccontextmanager
@@ -29,6 +30,7 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
     yield
     await engine.dispose()
+
 
 app = FastAPI(
     lifespan=lifespan,

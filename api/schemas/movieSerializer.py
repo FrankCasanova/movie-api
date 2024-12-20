@@ -1,5 +1,5 @@
-from pydantic import BaseModel, field_validator, Field
-from datetime import date, datetime
+from pydantic import BaseModel, Field
+from datetime import date
 
 
 class MovieResponse(BaseModel):
@@ -23,7 +23,7 @@ class MovieResponse(BaseModel):
     #         raise ValueError("Invalid release date format. Please use '2 July 1991'.")
 
     class Config:
-        orm_mode = True
+        from_atributes = True
 
 
 class UpdateMovieFieldRequest(BaseModel):
