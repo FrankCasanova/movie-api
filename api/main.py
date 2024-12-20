@@ -14,6 +14,13 @@ from icecream import ic
 ic.configureOutput(includeContext=True)
 
 
+#TODO: add a health check endpoint
+#TODO: add a metrics endpoint
+#TODO: add caching on endpoints
+#TODO: add error handling
+#TODO: add logging
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     engine = get_engine()
