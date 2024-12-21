@@ -15,11 +15,7 @@ ic.configureOutput(includeContext=True)
 
 # debugpy.listen(("0.0.0.0", 9999))
 
-# TODO: add a health check endpoint
-# TODO: add a metrics endpoint
-# TODO: add caching on endpoints
-# TODO: add error handling
-# TODO: add logging
+#TODO: add server send event when a movie is uploaded
 
 
 @asynccontextmanager
