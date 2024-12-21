@@ -16,6 +16,8 @@ ic.configureOutput(includeContext=True)
 # debugpy.listen(("0.0.0.0", 9999))
 
 #TODO: add server send event when a movie is uploaded
+#TODO: Retrieve a single movie from cache if exist
+#TODO: Install Alembic in order to migrate the database
 
 
 @asynccontextmanager
