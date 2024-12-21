@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,7 +13,6 @@ from icecream import ic
 
 movie_router = APIRouter()
 movie_router.prefix = "/movies"
-
 
 @movie_router.get("/", response_model=List[MovieResponse], tags=["movies"])
 async def read_movies(session: Annotated[AsyncSession, Depends(get_db_session)],
@@ -32,8 +32,9 @@ async def create_movie(movie: MovieResponse, session: Annotated[AsyncSession, De
                        redis: Annotated[Redis, Depends(get_redis)]):
     result = await add_movie(movie, session)
     await delete_cached_movies(redis)
-    ic('cached deleted')
     return result
+
+
 
 
 # router to return movie by id
@@ -52,6 +53,8 @@ async def update_movie(id: int, movie: MovieResponse, session: Annotated[AsyncSe
 
 
 @movie_router.delete("/{id}", response_model=dict, tags=["movies"])
-async def delete_movie(id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def delete_movie(id: int, session: Annotated[AsyncSession, Depends(get_db_session)],
+                       redis: Annotated[Redis, Depends(get_redis)]):
     result = await delete_movie_op(id, session)
+    await delete_cached_movies(redis)
     return result

@@ -1,6 +1,7 @@
 #app
 fastapi[all]
 uvicorn[standard]
+sse-startlette
 
 #database
 sqlalchemy[asyncio]

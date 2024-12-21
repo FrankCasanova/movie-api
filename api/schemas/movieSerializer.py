@@ -3,6 +3,7 @@ from datetime import date
 
 
 class MovieResponse(BaseModel):
+    id: int = Field(..., title="Movie ID", examples=[1])
     title: str = Field(..., title="Movie Title", max_length=100, min_length=1, examples=["The Shawshank Redemption"])
     poster: str = Field(..., title="Poster", max_length=1000, min_length=1, examples=["https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"])
     overview: str = Field(..., title="Overview", max_length=1000, min_length=1, examples=["Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."])
@@ -15,12 +16,7 @@ class MovieResponse(BaseModel):
     domestic_share: float = Field(..., title="This refers to the percentage of the movie's worldwide box office total that came from the domestic (US and Canada) market.", examples=["45.2"])
     infl_adj_dom_bo: int = Field(..., title="This refers to the domestic box office total adjusted for inflation.", examples=["233444897"])
 
-    # @field_validator('release_date')
-    # def parse_release_date(cls, v):
-    #     try:
-    #         return datetime.strptime(v, "%d %B %Y").date()
-    #     except ValueError:
-    #         raise ValueError("Invalid release date format. Please use '2 July 1991'.")
+
 
     class Config:
         from_atributes = True

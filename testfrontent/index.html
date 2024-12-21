@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #444;
+        }
+        .movie {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        .movie:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .movie img {
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+        .movie-details {
+            flex: 1;
+        }
+        .movie-details p {
+            margin: 5px 0;
+        }
+        #events {
+            margin-top: 20px;
+        }
+        .notification {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #e7f3fe;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 600px) {
+            .movie {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .movie img {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Movies App</h1>
+        <div>
+            <h2>Movies List</h2>
+            <div id="movies"></div>
+        </div>
+        <div>
+            <h2>Real-Time Updates</h2>
+            <div id="events"></div>
+        </div>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:8000/movies';
+        const moviesDiv = document.getElementById('movies');
+        const eventsDiv = document.getElementById('events');
+
+        // Function to fetch movies
+        async function fetchMovies() {
+            const response = await fetch(apiUrl);
+            const movies = await response.json();
+            moviesDiv.innerHTML = '';
+            movies.forEach(movie => {
+                const movieDiv = document.createElement('div');
+                movieDiv.className = 'movie';
+                movieDiv.innerHTML = `
+                    <img src="${movie.poster}" alt="${movie.title}" width="100">
+                    <div class="movie-details">
+                        <h3>${movie.title}</h3>
+                        <p><strong>Category:</strong> ${movie.category}</p>
+                        <p><strong>Release Date:</strong> ${new Date(movie.release_date).toLocaleDateString()}</p>
+                        <p><strong>Overview:</strong> ${movie.overview}</p>
+                        <p><strong>Theater Count:</strong> ${movie.theater_count}</p>
+                        <p><strong>Production Budget:</strong> ${movie.production_budget}</p>
+                        <p><strong>Opening Weekend:</strong> ${movie.opening_weekend}</p>
+                        <p><strong>Legs:</strong> ${movie.legs}</p>
+                        <p><strong>Domestic Share:</strong> ${movie.domestic_share}%</p>
+                    </div>
+                `;
+                moviesDiv.appendChild(movieDiv);
+            });
+        }
+
+        // Fetch movies on load
+        fetchMovies();
+
+        // Set up SSE
+        const eventSource = new EventSource('http://localhost:8000/events');
+
+        eventSource.onmessage = function(event) {
+            const newEvent = document.createElement('div');
+            newEvent.className = 'notification';
+            newEvent.textContent = `Event: ${event.data}`;
+            eventsDiv.appendChild(newEvent);
+        };
+
+        eventSource.onerror = function(event) {
+            console.error("EventSource failed:", event);
+        };
+    </script>
+</body>
+</html>

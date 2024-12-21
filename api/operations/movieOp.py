@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.models.movieModels import Movie
 from api.schemas.movieSerializer import MovieResponse
 from sqlalchemy import exists, select
+from api.shared_state import listeners
 
 
 async def get_all_movies(session: AsyncSession):
@@ -26,6 +27,8 @@ async def add_movie(movie: MovieResponse, session: AsyncSession):
     )
     session.add(new_movie)
     await session.commit()
+    for listener in listeners:
+        await listener.put(dict(data="New movie added"))
     return {"message": "Movie added successfully"}
 
 
@@ -62,6 +65,6 @@ async def delete_movie_op(id: int, session: AsyncSession):
     existing_movie = result.scalars().first()
     if not existing_movie:
         raise HTTPException(status_code=404, detail="Movie not found")
-    session.delete(existing_movie)
+    await session.delete(existing_movie)
     await session.commit()
     return {"message": "Movie deleted successfully"}

@@ -4,18 +4,19 @@ from contextlib import asynccontextmanager
 from api.models.movieModels import Base
 # import routes
 from api.routes.movieRoutes import movie_router
+from api.routes.events import event_router
 # import db connection
 from .db_connection import get_engine
 # import the asyncsession class
 # import fastapi staff
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 # to debug
 from icecream import ic
 ic.configureOutput(includeContext=True)
 
 # debugpy.listen(("0.0.0.0", 9999))
 
-#TODO: add server send event when a movie is uploaded
 #TODO: Retrieve a single movie from cache if exist
 #TODO: Install Alembic in order to migrate the database
 
@@ -34,8 +35,16 @@ app = FastAPI(
     lifespan=lifespan,
     root_path='/api'
     )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # add movie routes
 app.include_router(movie_router)
+app.include_router(event_router)
 app.title = "Movie API"
 app.version = "0.0.1"
 app.summary = "API for movie economic data"

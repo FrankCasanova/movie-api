@@ -12,6 +12,7 @@ CACHE_EXPIRATION = 3600  # 1 hour in seconds
 def movie_serializer(movie: Movie) -> dict:
     """Serialize a movie object to dict for caching"""
     return {
+        "id": movie.id,
         "title": movie.title,
         "poster": movie.poster,
         "overview": movie.overview,
